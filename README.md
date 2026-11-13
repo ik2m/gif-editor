@@ -6,10 +6,10 @@
 ## 使い方
 
 ```bash
-npm install
-npm run dev      # 開発サーバー（http://localhost:5173）
-npm run build    # dist/ に静的ファイルを出力
-npm test         # ユニットテスト
+pnpm install
+pnpm dev      # 開発サーバー（http://localhost:5173）
+pnpm build    # dist/ に静的ファイルを出力
+pnpm test     # ユニットテスト
 ```
 
 1. 「動画を開く」またはドラッグ＆ドロップで動画を読み込む
