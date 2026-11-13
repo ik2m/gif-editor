@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GIF Editor</title>
+  </head>
+  <body>
+    <div id="app">
+      <header class="topbar">
+        <h1>GIF Editor</h1>
+        <label class="btn primary">
+          動画を開く
+          <input id="file-input" type="file" accept="video/*,.mkv,.mov" hidden />
+        </label>
+        <span id="file-name" class="file-name"></span>
+        <span class="spacer"></span>
+        <span class="privacy">動画は端末内で処理され、どこにもアップロードされません</span>
+      </header>
+
+      <main class="layout">
+        <section class="stage">
+          <div class="video-wrap">
+            <video id="video" playsinline preload="auto"></video>
+            <div id="drop-hint" class="drop-hint">
+              <strong>動画ファイルをここにドロップ</strong>
+              <span>またはクリックして選択（MP4 / WebM / MOV など）</span>
+            </div>
+          </div>
+          <div id="video-info" class="video-info"></div>
+
+          <div class="transport">
+            <button id="btn-first" class="btn icon" title="先頭へ">⏮</button>
+            <button id="btn-prev" class="btn icon" title="1フレーム戻る（← / Shift+←で1秒）">◀︎|</button>
+            <button id="btn-play" class="btn icon" title="再生 / 一時停止（Space）">▶</button>
+            <button id="btn-next" class="btn icon" title="1フレーム進む（→ / Shift+→で1秒）">|▶︎</button>
+            <span id="clock" class="clock"></span>
+          </div>
+
+          <div id="timeline"></div>
+
+          <div class="mark-bar">
+            <button id="btn-in" class="btn" title="現在のフレームを開始点に（I）">[ 開始点 <kbd>I</kbd></button>
+            <button id="btn-out" class="btn" title="現在のフレームを終了点に（O）">終了点 ] <kbd>O</kbd></button>
+            <button id="btn-add" class="btn primary" title="開始点〜終了点を範囲として追加（Enter）">＋ 範囲を追加 <kbd>Enter</kbd></button>
+            <button id="btn-clear-mark" class="btn ghost small" title="開始点・終了点をクリア（Esc）">クリア</button>
+            <span id="mark-info" class="mark-info"></span>
+          </div>
+
+          <details class="help">
+            <summary>操作方法</summary>
+            <ul>
+              <li><b>範囲の作り方</b>：①タイムライン下段の空き部分をドラッグ ②<kbd>I</kbd>/<kbd>O</kbd>で開始・終了点を決めて<kbd>Enter</kbd> ③右の一覧で数値を直接編集</li>
+              <li><b>範囲の調整</b>：タイムライン上の範囲をドラッグで移動、両端をドラッグで伸縮。重なっていても問題ありません</li>
+              <li><kbd>Space</kbd> 再生/停止、<kbd>←</kbd><kbd>→</kbd> 1フレーム移動（<kbd>Shift</kbd>で1秒）、<kbd>L</kbd> 選択中の範囲をループ再生、<kbd>Delete</kbd> 選択中の範囲を削除</li>
+              <li>タイムライン上段（目盛り）はクリック/ドラッグでシーク</li>
+            </ul>
+          </details>
+        </section>
+
+        <aside class="side">
+          <section class="panel">
+            <h2>表示単位</h2>
+            <div class="row">
+              <div class="seg">
+                <button data-unit="sec">秒</button>
+                <button data-unit="frame">フレーム</button>
+              </div>
+              <label class="fps-label">
+                元動画のFPS
+                <input id="src-fps" type="number" min="1" max="240" step="any" />
+              </label>
+              <span id="fps-note" class="note"></span>
+            </div>
+            <p class="note">ブラウザは動画のFPSを取得できないため自動推定しています。ずれている場合は手動で修正してください。</p>
+          </section>
+
+          <section class="panel">
+            <h2>共通の出力設定</h2>
+            <div id="global-settings" class="settings-grid"></div>
+            <p class="note">FPSは最大50（GIFの仕様上の上限）。横幅は元動画より大きくしても元サイズで出力します。</p>
+          </section>
+
+          <section class="panel ranges">
+            <div class="ranges-head">
+              <h2>範囲 <span id="range-count" class="count">0</span></h2>
+              <span class="spacer"></span>
+              <button id="btn-cancel-all" class="btn small ghost" hidden>すべて中止</button>
+              <button id="btn-zip" class="btn primary">すべてZIPで出力</button>
+            </div>
+            <div id="zip-status" class="note"></div>
+            <div id="range-list" class="range-list"></div>
+          </section>
+        </aside>
+      </main>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
